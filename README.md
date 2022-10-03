@@ -1,3 +1,3 @@
-# as2_node_template
+# alphanumeric_viewer
 
-Template for Aerostack2 Nodes
+Alphanumeric viewer for Aerostack2

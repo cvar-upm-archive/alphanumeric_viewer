@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-set(PROJECT_NAME as2_node_template)
+set(PROJECT_NAME alphanumeric_viewer)
 project(${PROJECT_NAME})
 
 # Default to C++14
@@ -20,6 +20,8 @@ set(PROJECT_DEPENDENCIES
   as2_msgs
   std_srvs
   std_msgs
+  geometry_msgs
+  sensor_msgs
 )
 
 foreach(DEPENDENCY ${PROJECT_DEPENDENCIES})
@@ -34,12 +36,12 @@ include_directories(
 )
 
 set(SOURCE_CPP_FILES 
-  src/as2_node_template.cpp
+  src/alphanumeric_viewer.cpp
 )
 
-add_executable(${PROJECT_NAME}_node src/as2_node_template_node.cpp ${SOURCE_CPP_FILES})
+add_executable(${PROJECT_NAME}_node src/alphanumeric_viewer_node.cpp ${SOURCE_CPP_FILES})
 ament_target_dependencies(${PROJECT_NAME}_node ${PROJECT_DEPENDENCIES})
-
+target_link_libraries(${PROJECT_NAME}_node ncurses)
 
 if(BUILD_TESTING)
   find_package(ament_cmake_cppcheck REQUIRED)
