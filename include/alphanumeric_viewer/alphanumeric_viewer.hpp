@@ -6,7 +6,8 @@
 #include <curses.h>
 #include <iostream>
 #include <string>
-#include <math.h> 
+#include <math.h>
+#include <tf2/utils.h>
 
 #include <rclcpp/rclcpp.hpp>
 #include "as2_core/names/actions.hpp"
@@ -21,7 +22,6 @@
 #include "as2_msgs/msg/platform_info.hpp"
 #include "as2_msgs/msg/thrust.hpp"
 #include "as2_msgs/msg/controller_info.hpp"
-#include "as2_msgs/msg/trajectory_waypoints.hpp"
 #include "sensor_msgs/msg/nav_sat_fix.hpp"
 
 class AlphanumericViewer : public as2::Node {
@@ -32,6 +32,14 @@ class AlphanumericViewer : public as2::Node {
   void setupNode();
   void printSensorMenu();
   void printNavigationMenu();
+  void printStream(double var,bool aux);
+  void printStream3(float var,bool aux);
+  void printStream(float var,bool aux);
+  void printNavigationValues();
+  void printSensorValues();
+  void printBattery();
+  void printQuadrotorState();
+  void printControlMode();
 
   using CallbackReturn =
       rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
@@ -53,7 +61,7 @@ class AlphanumericViewer : public as2::Node {
   rclcpp::Subscription <as2_msgs::msg::ControllerInfo>::SharedPtr controller_info_sub_;
   rclcpp::Subscription <geometry_msgs::msg::PoseStamped>::SharedPtr position_reference_sub_;
   rclcpp::Subscription <geometry_msgs::msg::TwistStamped>::SharedPtr speed_reference_sub_;
-  rclcpp::Subscription <as2_msgs::msg::TrajectoryWaypoints>::SharedPtr trajectory_reference_sub_;
+  //rclcpp::Subscription <as2_msgs::msg::TrajectoryWaypoints>::SharedPtr trajectory_reference_sub_;
   rclcpp::Subscription <sensor_msgs::msg::NavSatFix>::SharedPtr gps_sub_;
   rclcpp::Subscription <as2_msgs::msg::ControlMode>::SharedPtr control_mode_sub_;
 
@@ -69,7 +77,7 @@ class AlphanumericViewer : public as2::Node {
   geometry_msgs::msg::PoseStamped reference_pose_;
   geometry_msgs::msg::TwistStamped reference_twist_;
   sensor_msgs::msg::NavSatFix gps_;
-  as2_msgs::msg::TrajectoryWaypoints reference_traj_;
+  //as2_msgs::msg::TrajectoryWaypoints reference_traj_;
 
   std::stringstream interface_printout_stream;
   std::stringstream pinterface_printout_stream;
@@ -96,7 +104,15 @@ class AlphanumericViewer : public as2::Node {
   bool gps_aux = false;
   bool thrust_aux = false;
 
+  int last_received_yaw_mode;
   int last_received_control_mode;
+  int last_received_reference_frame;
+
+  char command = 0;
+
+    // 0 Sensor
+    // 1 Navigation
+  int window = 0;
 
   void poseCallback (const geometry_msgs::msg::PoseStamped::SharedPtr _msg);
   void twistCallback (const geometry_msgs::msg::TwistStamped::SharedPtr _msg); 
@@ -110,7 +126,7 @@ class AlphanumericViewer : public as2::Node {
   void poseReferenceCallback (const geometry_msgs::msg::PoseStamped::SharedPtr _msg);
   void speedReferenceCallback (const geometry_msgs::msg::TwistStamped::SharedPtr _msg);
   void gpsCallback(const sensor_msgs::msg::NavSatFix::SharedPtr _msg);
-  void trajectoryReferenceCallback (const as2_msgs::msg::TrajectoryWaypoints::SharedPtr _msg);
+  //void trajectoryReferenceCallback (const as2_msgs::msg::TrajectoryWaypoints::SharedPtr _msg);
 };
 
 #endif  // ALPHANUMERIC_VIEWER_HPP_
