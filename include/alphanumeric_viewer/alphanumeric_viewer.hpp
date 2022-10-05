@@ -32,14 +32,22 @@ class AlphanumericViewer : public as2::Node {
   void setupNode();
   void printSensorMenu();
   void printNavigationMenu();
+  void printPlatformMenu();
   void printStream(double var,bool aux);
   void printStream3(float var,bool aux);
   void printStream(float var,bool aux);
   void printNavigationValues();
   void printSensorValues();
+  void printPlatformValues();
   void printBattery();
   void printQuadrotorState();
-  void printControlMode();
+  void printControlModeInYaw();
+  void printControlModeInControl();
+  void printControlModeInFrame();
+  void printControlModeOutYaw();
+  void printControlModeOutControl();
+  void printControlModeOutFrame();
+  void printPlatformStatus();
 
   using CallbackReturn =
       rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
@@ -110,8 +118,8 @@ class AlphanumericViewer : public as2::Node {
 
   char command = 0;
 
-    // 0 Sensor
-    // 1 Navigation
+  // 0 Sensor
+  // 1 Navigation
   int window = 0;
 
   void poseCallback (const geometry_msgs::msg::PoseStamped::SharedPtr _msg);
