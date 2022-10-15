@@ -235,7 +235,13 @@ void AlphanumericViewer::setupNode(){
       move(7,50);
       printw("Temperature:");
       move(9,50);
-      printw("GPS Coordinates (lat,lon,alt):");
+      printw("GPS Coordinates:");
+      move(10,50);
+      printw("Lat:");
+      move(11,50);
+      printw("Lon:");
+      move(12,50);
+      printw("Alt:");
   }
 
   void AlphanumericViewer::printPlatformMenu(){
@@ -270,18 +276,22 @@ void AlphanumericViewer::setupNode(){
       printw(" Orientation (yaw):");
       move(14,0);
       printw(" Angular Speed (yaw):");
+      move(16,0);
+      printw(" CONTROLLER CONTROL MODE");
       move(17,0);
-      printw(" Yaw Mode IN:");
+      printw(" Yaw Mode:");
       move(18,0);
-      printw(" Control Mode IN:");
+      printw(" Control Mode:");
       move(19,0);
-      printw(" Frame Mode IN:");
+      printw(" Frame Mode:");
+      move(16,41);
+      printw(" PLATFORM CONTROL MODE");
       move(17,41);
-      printw(" Yaw Mode OUT:");
+      printw(" Yaw Mode:");
       move(18,41);
-      printw(" Control Mode OUT:");
+      printw(" Control Mode:");
       move(19,41);
-      printw(" Frame Mode OUT:");
+      printw(" Frame Mode:");
       move(5,56);
       printw(" Conected:");
       move(6,56);
@@ -399,12 +409,12 @@ void AlphanumericViewer::printSensorValues(){
     //Temperature
     move(8,52);
     printStream(0.0,temperature_aux);printw(" Degrees celsius");
-    interface_printout_stream << std::fixed << std::setprecision(6) << std::setfill('0');
-    move(10,50);
-    printStream(gps_.latitude,gps_aux);printw(","); 
-    move(10,60);
-    printStream(gps_.longitude,gps_aux);printw(","); 
-    move(10,70);
+    interface_printout_stream << std::fixed << std::setprecision(8) << std::setfill('0');
+    move(10,54);
+    printStream(gps_.latitude,gps_aux); 
+    move(11,54);
+    printStream(gps_.longitude,gps_aux);
+    move(12,54);
     printStream(gps_.altitude,gps_aux);
     interface_printout_stream << std::fixed << std::setprecision(2) << std::setfill('0');
 }
@@ -456,9 +466,9 @@ void AlphanumericViewer::printNavigationValues(){
     //Pose
     move(12,26);
     printStream3(self_localization_pose_.pose.position.x,current_pose_aux);printw(",");
-    move(12,33);
+    move(12,34);
     printStream3(self_localization_pose_.pose.position.y,current_pose_aux);printw(",");
-    move(12,40);
+    move(12,42);
     printStream3(self_localization_pose_.pose.position.z,current_pose_aux);printw(" m "); 
     //Speed
     move(13,26);
@@ -528,9 +538,9 @@ void AlphanumericViewer::printNavigationValues(){
         //References
         //Pose
         move(11,27);
-        printStream3(reference_pose_.pose.position.x,current_pose_reference_aux);printw(" ,");
+        printStream3(reference_pose_.pose.position.x,current_pose_reference_aux);printw(",");
         move(11,35);
-        printStream3(reference_pose_.pose.position.y,current_pose_reference_aux);printw(" ,");
+        printStream3(reference_pose_.pose.position.y,current_pose_reference_aux);printw(",");
         move(11,43);
         printStream3(reference_pose_.pose.position.z,current_pose_reference_aux);printw(" m "); 
         //Speed
@@ -551,17 +561,17 @@ void AlphanumericViewer::printNavigationValues(){
         move(14,27);
         printStream(reference_twist_.twist.angular.z,current_speed_reference_aux);printw(" rad/s  ");  
         //Control mode
-        move(17,14);
+        move(17,11);
         printControlModeInYaw();
-        move(18,18);
+        move(18,15);
         printControlModeInControl();
-        move(19,16);
+        move(19,13);
         printControlModeInFrame();
-        move(17,56);
+        move(17,52);
         printControlModeOutYaw();
-        move(18,60);
+        move(18,56);
         printControlModeOutControl();
-        move(19,58);
+        move(19,54);
         printControlModeOutFrame();
         printPlatformStatus();
         move(10,65);

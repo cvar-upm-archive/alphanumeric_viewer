@@ -24,6 +24,11 @@
 #include "as2_msgs/msg/controller_info.hpp"
 #include "sensor_msgs/msg/nav_sat_fix.hpp"
 
+#define ASCII_KEY_UP 65
+#define ASCII_KEY_DOWN 66
+#define ASCII_KEY_RIGHT 67
+#define ASCII_KEY_LEFT 68
+
 class AlphanumericViewer : public as2::Node {
  public:
   AlphanumericViewer();
