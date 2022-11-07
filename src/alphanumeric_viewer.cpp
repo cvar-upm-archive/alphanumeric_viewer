@@ -722,7 +722,7 @@ void AlphanumericViewer::printQuadrotorState(){
     }
 }
 void AlphanumericViewer::printControlModeInYaw(){
-    switch (controller_info_.current_control_mode.yaw_mode) {
+    switch (controller_info_.output_control_mode.yaw_mode) {
         case as2_msgs::msg::ControlMode::NONE:
             printw("NONE        ");
             break;
@@ -739,7 +739,7 @@ void AlphanumericViewer::printControlModeInYaw(){
 }
 
 void AlphanumericViewer::printControlModeInControl(){
-    switch (controller_info_.current_control_mode.control_mode) {
+    switch (controller_info_.output_control_mode.control_mode) {
         case as2_msgs::msg::ControlMode::UNSET:
             printw("UNSET        ");
             break;
@@ -774,7 +774,7 @@ void AlphanumericViewer::printControlModeInControl(){
 }
 
 void AlphanumericViewer::printControlModeInFrame(){
-    switch (controller_info_.current_control_mode.reference_frame) {
+    switch (controller_info_.output_control_mode.reference_frame) {
         case as2_msgs::msg::ControlMode::UNDEFINED_FRAME:
             printw("UNDEFINED_FRAME     ");
             break;
