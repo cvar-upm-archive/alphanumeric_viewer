@@ -31,6 +31,41 @@ void AlphanumericViewer::run(){
             break;
         }
 
+        if (command == '\033'){
+            getch();
+            switch(getch()) { // the real value
+                case 'C':
+                    // code for arrow right
+                    if (window == 2){
+                        break;
+                    }
+                    window++;
+                case 'D':
+                    // code for arrow left
+                    if (window == 0){
+                        break;
+                    }
+                    window--;
+            }
+            switch (window){
+                case 0:
+                    erase();
+                    refresh();
+                    printSensorMenu();
+                break;
+                case 1:
+                    erase();
+                    refresh();
+                    printNavigationMenu();
+                break;
+                case 2:
+                    erase();
+                    refresh();
+                    printPlatformMenu();
+                break;
+            }
+        }
+
         //Print values
         switch (window){
             case 0:
@@ -76,7 +111,7 @@ void AlphanumericViewer::setupNode(){
       as2_names::topics::platform::qos,
       std::bind(&AlphanumericViewer::platformCallback, this, std::placeholders::_1));
 
-  actuator_command_pose_sub_ = this->create_subscription<as2_msgs::msg::PlatformInfo>(
+  actuator_command_pose_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
       this->generate_global_name(as2_names::topics::actuator_command::pose),
       as2_names::topics::actuator_command::qos,
       std::bind(&AlphanumericViewer::actuatorPoseCallback, this, std::placeholders::_1));
@@ -722,7 +757,7 @@ void AlphanumericViewer::printQuadrotorState(){
     }
 }
 void AlphanumericViewer::printControlModeInYaw(){
-    switch (controller_info_.output_control_mode.yaw_mode) {
+    switch (controller_info_.input_control_mode.yaw_mode) {
         case as2_msgs::msg::ControlMode::NONE:
             printw("NONE        ");
             break;
@@ -739,7 +774,7 @@ void AlphanumericViewer::printControlModeInYaw(){
 }
 
 void AlphanumericViewer::printControlModeInControl(){
-    switch (controller_info_.output_control_mode.control_mode) {
+    switch (controller_info_.input_control_mode.control_mode) {
         case as2_msgs::msg::ControlMode::UNSET:
             printw("UNSET        ");
             break;
@@ -774,7 +809,7 @@ void AlphanumericViewer::printControlModeInControl(){
 }
 
 void AlphanumericViewer::printControlModeInFrame(){
-    switch (controller_info_.output_control_mode.reference_frame) {
+    switch (controller_info_.input_control_mode.reference_frame) {
         case as2_msgs::msg::ControlMode::UNDEFINED_FRAME:
             printw("UNDEFINED_FRAME     ");
             break;
