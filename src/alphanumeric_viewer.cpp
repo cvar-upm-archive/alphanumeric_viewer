@@ -34,18 +34,20 @@ void AlphanumericViewer::run(){
         if (command == '\033'){
             getch();
             switch(getch()) { // the real value
-                case 'C':
-                    // code for arrow right
-                    if (window == 2){
-                        break;
-                    }
-                    window++;
                 case 'D':
                     // code for arrow left
                     if (window == 0){
                         break;
                     }
                     window--;
+                    break;
+                case 'C':
+                    // code for arrow right
+                    if (window == 2){
+                        break;
+                    }
+                    window++;
+                    break;
             }
             switch (window){
                 case 0:
