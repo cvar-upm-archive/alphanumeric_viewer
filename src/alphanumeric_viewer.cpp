@@ -691,18 +691,18 @@ void AlphanumericViewer::printBattery(){
         interface_printout_stream.clear();
         interface_printout_stream.str(std::string());
         clrtoeol(); refresh();
-        float percentage = battery_status_.percentage * 100;
+        float percentage = battery_status_.percentage;
         interface_printout_stream << std::setw(2) << std::internal << percentage;
-        if(battery_status_.percentage == 1) {
+        if(battery_status_.percentage/100 == 1) {
             attron(COLOR_PAIR(1));printw(" %s",interface_printout_stream.str().c_str());attroff(COLOR_PAIR(1));
         }
-        if(battery_status_.percentage > 0.5 && battery_status_.percentage < 1) {
+        if(battery_status_.percentage/100 > 0.5 && battery_status_.percentage < 1) {
             attron(COLOR_PAIR(1));printw(" %s",interface_printout_stream.str().c_str());attroff(COLOR_PAIR(1));
         }
-        if(battery_status_.percentage <= 0.5 && battery_status_.percentage > 0.2) {
+        if(battery_status_.percentage/100 <= 0.5 && battery_status_.percentage > 0.2) {
             attron(COLOR_PAIR(3));printw(" %s",interface_printout_stream.str().c_str());attroff(COLOR_PAIR(3));
         }
-        if(battery_status_.percentage <= 0.2) {
+        if(battery_status_.percentage/100 <= 0.2) {
             attron(COLOR_PAIR(2));printw(" %s",interface_printout_stream.str().c_str());attroff(COLOR_PAIR(2));  
         }
     }else{ //Battery has not been received
