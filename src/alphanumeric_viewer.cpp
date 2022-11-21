@@ -208,6 +208,10 @@ void AlphanumericViewer::setupNode(){
   }
 
   void AlphanumericViewer::printNavigationMenu(){
+      current_pose_aux = false;
+      current_speed_aux = false;
+      imu_aux = false;
+
       move(0,0);
       printw("                - ALPHANUMERIC VIEWER OF AERIAL ROBOTICS DATA -");
       move(1,0);
@@ -244,6 +248,13 @@ void AlphanumericViewer::setupNode(){
   }
 
   void AlphanumericViewer::printSensorMenu(){
+      battery_aux = false;
+      current_speed_aux = false;
+      imu_aux = false;
+      current_pose_aux = false;
+      altitude_sea_level_aux = false;
+      gps_aux = false;
+      
       move(0,0);
       printw("                - ALPHANUMERIC VIEWER OF AERIAL ROBOTICS DATA -");
       move(1,0);
@@ -282,6 +293,13 @@ void AlphanumericViewer::setupNode(){
   }
 
   void AlphanumericViewer::printPlatformMenu(){
+      current_pose_reference_aux = false;
+      current_speed_reference_aux = false;
+      thrust_aux = false;
+      actuator_command_pose_aux = false;
+      actuator_command_twist_aux = false;
+      current_pose_aux = false;
+
       move(0,0);
       printw("                - ALPHANUMERIC VIEWER OF AERIAL ROBOTICS DATA -");
       move(1,0);
