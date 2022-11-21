@@ -208,9 +208,7 @@ void AlphanumericViewer::setupNode(){
   }
 
   void AlphanumericViewer::printNavigationMenu(){
-      current_pose_aux = false;
-      current_speed_aux = false;
-      imu_aux = false;
+      clearValues();
 
       move(0,0);
       printw("                - ALPHANUMERIC VIEWER OF AERIAL ROBOTICS DATA -");
@@ -248,12 +246,7 @@ void AlphanumericViewer::setupNode(){
   }
 
   void AlphanumericViewer::printSensorMenu(){
-      battery_aux = false;
-      current_speed_aux = false;
-      imu_aux = false;
-      current_pose_aux = false;
-      altitude_sea_level_aux = false;
-      gps_aux = false;
+      clearValues();
       
       move(0,0);
       printw("                - ALPHANUMERIC VIEWER OF AERIAL ROBOTICS DATA -");
@@ -293,12 +286,7 @@ void AlphanumericViewer::setupNode(){
   }
 
   void AlphanumericViewer::printPlatformMenu(){
-      current_pose_reference_aux = false;
-      current_speed_reference_aux = false;
-      thrust_aux = false;
-      actuator_command_pose_aux = false;
-      actuator_command_twist_aux = false;
-      current_pose_aux = false;
+      clearValues();
 
       move(0,0);
       printw("                - ALPHANUMERIC VIEWER OF AERIAL ROBOTICS DATA -");
@@ -313,24 +301,24 @@ void AlphanumericViewer::setupNode(){
       move(4,0);
       printw(" ACTUATOR COMMANDS");
       move(5,0);
-      printw(" Orientation (pitch,roll):");
+      printw(" Orientation (r,p,y):");
       move(6,0);
-      printw(" Linear Speed(z):");
+      printw(" Linear Speed (x,y,z):");
       move(7,0);
       printw(" Thrust:");
       move(8,0);
-      printw(" Angular Speed (yaw):");
+      printw(" Angular Speed (r,p,y):");
 
       move(10,0);
       printw(" REFERENCES");
       move(11,0);
-      printw(" Position (xyz):");
+      printw(" Position (x,y,z):");
       move(12,0);
-      printw(" Linear Speed (xyz):");
+      printw(" Linear Speed (x,y,z):");
       move(13,0);
-      printw(" Orientation (yaw):");
+      printw(" Orientation (r,p,y):");
       move(14,0);
-      printw(" Angular Speed (yaw):");
+      printw(" Angular Speed (r,p,y):");
       move(16,0);
       printw(" CONTROLLER CONTROL MODE");
       move(17,0);
@@ -347,13 +335,13 @@ void AlphanumericViewer::setupNode(){
       printw(" Control Mode:");
       move(19,41);
       printw(" Frame Mode:");
-      move(5,56);
+      move(5,58);
       printw(" Conected:");
-      move(6,56);
+      move(6,58);
       printw(" Armed:");
-      move(7,56);
+      move(7,58);
       printw(" Offboard:");
-      move(10,56);
+      move(10,58);
       printw(" Status:");
   }
 
@@ -574,46 +562,67 @@ void AlphanumericViewer::printNavigationValues(){
             double r = 0; double p = 0; double yaw = 0;
             actuator_m.getRPY(r, p, yaw);
             if (std::isnan(r)) r = 0.0; 
-            if (std::isnan(p)) p = 0.0; 
-            move(5,27);
+            if (std::isnan(p)) p = 0.0;
+            if (std::isnan(yaw)) yaw = 0.0;
+            move(5,28);
+            printStream(r,current_pose_aux);printw(",");
+            move(5,35);
             printStream(p,current_pose_aux);printw(",");
-            move(5,34);
-            printStream(r,current_pose_aux);printw(" rad  ");
+            move(5,42);
+            printStream(yaw,current_pose_aux);printw(" rad  ");
             //Speed(z)
-            move(6,27);
+            move(6,28);
+            printStream(actuator_twist_.twist.linear.x,current_speed_aux);printw(",");
+            move(6,35);
+            printStream(actuator_twist_.twist.linear.y,current_speed_aux);printw(",");
+            move(6,42);
             printStream(actuator_twist_.twist.linear.z,current_speed_aux);printw(" m/s  ");
             //Thrust
-            move(7,27);
+            move(7,28);
             printStream(actuator_thrust_.thrust,thrust_aux);printw(" N  ");
             //Speed(yaw)
-            move(8,27);
+            move(8,28);
+            printStream(actuator_twist_.twist.angular.x,current_speed_aux);printw(",");
+            move(8,35);
+            printStream(actuator_twist_.twist.angular.y,current_speed_aux);printw(",");
+            move(8,42);
             printStream(actuator_twist_.twist.angular.z,current_speed_aux);printw(" rad/s  ");
         }
 
         //References
         //Pose
-        move(11,27);
+        move(11,28);
         printStream3(reference_pose_.pose.position.x,current_pose_reference_aux);printw(",");
-        move(11,35);
+        move(11,36);
         printStream3(reference_pose_.pose.position.y,current_pose_reference_aux);printw(",");
-        move(11,43);
+        move(11,44);
         printStream3(reference_pose_.pose.position.z,current_pose_reference_aux);printw(" m "); 
         //Speed
-        move(12,27);
+        move(12,28);
         printStream(reference_twist_.twist.linear.x,current_speed_reference_aux);printw(",");
-        move(12,34);
+        move(12,35);
         printStream(reference_twist_.twist.linear.y,current_speed_reference_aux);printw(",");
-        move(12,41);
+        move(12,42);
         printStream(reference_twist_.twist.linear.z,current_speed_reference_aux);printw(" m/s ");
         //Pose (yaw)
         tf2::Matrix3x3 pose_ref_m(tf2::Quaternion (reference_pose_.pose.orientation.x,reference_pose_.pose.orientation.y,reference_pose_.pose.orientation.z,reference_pose_.pose.orientation.w));
         double r = 0; double p = 0; double yaw = 0;
         pose_ref_m.getRPY(r, p, yaw);
+        if (std::isnan(r)) r = 0.0;
+        if (std::isnan(p)) p = 0.0; 
         if (std::isnan(yaw)) yaw = 0.0; 
-        move(13,27);
+        move(13,28);
+        printStream(r,current_pose_reference_aux);printw(",");
+        move(13,35);
+        printStream(p,current_pose_reference_aux);printw(",");
+        move(13,42);
         printStream(yaw,current_pose_reference_aux);printw(" rad");
         //Speed (yaw)
-        move(14,27);
+        move(14,28);
+        printStream(reference_twist_.twist.angular.x,current_speed_reference_aux);printw(",");
+        move(14,35);
+        printStream(reference_twist_.twist.angular.y,current_speed_reference_aux);printw(","); 
+        move(14,42);
         printStream(reference_twist_.twist.angular.z,current_speed_reference_aux);printw(" rad/s  ");  
         //Control mode
         move(17,11);
@@ -629,7 +638,7 @@ void AlphanumericViewer::printNavigationValues(){
         move(19,54);
         printControlModeOutFrame();
         printPlatformStatus();
-        move(10,65);
+        move(10,68);
         printQuadrotorState();   
     }
     //State
@@ -711,16 +720,16 @@ void AlphanumericViewer::printBattery(){
         clrtoeol(); refresh();
         float percentage = battery_status_.percentage;
         interface_printout_stream << std::setw(2) << std::internal << percentage;
-        if(battery_status_.percentage/100 == 1) {
+        if(battery_status_.percentage == 100) {
             attron(COLOR_PAIR(1));printw(" %s",interface_printout_stream.str().c_str());attroff(COLOR_PAIR(1));
         }
-        if(battery_status_.percentage/100 > 0.5 && battery_status_.percentage < 1) {
+        if(battery_status_.percentage > 50 && battery_status_.percentage < 100) {
             attron(COLOR_PAIR(1));printw(" %s",interface_printout_stream.str().c_str());attroff(COLOR_PAIR(1));
         }
-        if(battery_status_.percentage/100 <= 0.5 && battery_status_.percentage > 0.2) {
+        if(battery_status_.percentage <= 50 && battery_status_.percentage > 20) {
             attron(COLOR_PAIR(3));printw(" %s",interface_printout_stream.str().c_str());attroff(COLOR_PAIR(3));
         }
-        if(battery_status_.percentage/100 <= 0.2) {
+        if(battery_status_.percentage <= 20) {
             attron(COLOR_PAIR(2));printw(" %s",interface_printout_stream.str().c_str());attroff(COLOR_PAIR(2));  
         }
     }else{ //Battery has not been received
@@ -731,26 +740,26 @@ void AlphanumericViewer::printBattery(){
 }
 
 void AlphanumericViewer::printPlatformStatus(){
-    move(5,68);
+    move(5,70);
     if (platform_info_.connected){
-        printw("True    ");
+        printw("True ");
     }
     else {
-        printw("False   ");
+        printw("False");
     }
-    move(6,68);
+    move(6,70);
     if (platform_info_.armed){
-        printw("True    ");
+        printw("True ");
     }
     else {
-        printw("False   ");
+        printw("False");
     }
-    move(7,68);
+    move(7,70);
     if (platform_info_.offboard){
-        printw("True    ");
+        printw("True ");
     }
     else {
-        printw("False   ");
+        printw("False");
     }   
 }
 
@@ -766,7 +775,7 @@ void AlphanumericViewer::printQuadrotorState(){
             printw("EMERGENCY ");
             break;
         case as2_msgs::msg::PlatformStatus::DISARMED:
-            printw("DISARMED  ");
+            printw("DISARMED"  );
             break;
         case as2_msgs::msg::PlatformStatus::TAKING_OFF:
             printw("TAKING OFF");
@@ -782,13 +791,13 @@ void AlphanumericViewer::printControlModeInYaw(){
             printw("NONE        ");
             break;
         case as2_msgs::msg::ControlMode::YAW_ANGLE:
-            printw("YAW_ANGLE    ");
+            printw("YAW_ANGLE   ");
             break;
         case as2_msgs::msg::ControlMode::YAW_SPEED:
-            printw("YAW_SPEED     ");
+            printw("YAW_SPEED   ");
             break;
         default:
-            printw("UNKNOWN      ");
+            printw("UNKNOWN     ");
             break;
     }
 }
@@ -919,6 +928,27 @@ void AlphanumericViewer::printControlModeOutFrame(){
             break;
         }  
 }
+
+void AlphanumericViewer::clearValues(){
+    gps_aux = false;
+    imu_aux = false;
+    thrust_aux = false;
+    battery_aux = false;
+    altitude_aux = false;
+    temperature_aux = false;
+    current_pose_aux = false;
+    ground_speed_aux = false;
+    current_speed_aux = false;
+    platform_info_aux = false;
+    controller_info_aux = false;
+    altitude_sea_level_aux = false;
+    actuator_command_pose_aux = false;
+    current_pose_reference_aux = false;
+    actuator_command_twist_aux = false;
+    current_speed_reference_aux = false;
+    actuator_command_thrust_aux = false;
+    current_trajectory_reference_aux = false;
+    }
 
 using CallbackReturn =
     rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;

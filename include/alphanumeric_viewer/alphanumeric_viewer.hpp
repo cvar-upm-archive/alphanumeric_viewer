@@ -53,6 +53,7 @@ class AlphanumericViewer : public as2::Node {
   void printControlModeOutControl();
   void printControlModeOutFrame();
   void printPlatformStatus();
+  void clearValues();
 
   using CallbackReturn =
       rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
