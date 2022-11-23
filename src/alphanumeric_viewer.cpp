@@ -222,12 +222,10 @@ void AlphanumericViewer::setupNode(){
       move(5,0);
       printw(" Altitude(z):");
       move(6,0);
-      printw(" Linear speed IMU (xyz):");
-      move(7,0);
       printw(" Orientation IMU (ypr):");
-      move(8,0);
+      move(7,0);
       printw(" Angular speed IMU (ypr):");
-      move(9,0);
+      move(8,0);
       printw(" Acceleration IMU (xyz):");
 
       //Localization
@@ -466,13 +464,6 @@ void AlphanumericViewer::printNavigationValues(){
     //Measurements
     move(5,26);
     printStream(self_localization_pose_.pose.position.z,current_pose_aux);printw(" m");
-    //Speed
-    move(6,26);
-    printStream(self_localization_twist_.twist.linear.x,current_speed_aux);printw(",");
-    move(6,33);
-    printStream(self_localization_twist_.twist.linear.y,current_speed_aux);printw(",");
-    move(6,40);
-    printStream(self_localization_twist_.twist.linear.z,current_speed_aux);printw(" m/s   ");
 
     //Pose IMU
     tf2::Matrix3x3 imu_m(tf2::Quaternion (imu_.orientation.x,imu_.orientation.y,imu_.orientation.z,imu_.orientation.w));
@@ -482,27 +473,27 @@ void AlphanumericViewer::printNavigationValues(){
     if (std::isnan(p)) p = 0.0; 
     if (std::isnan(yaw)) yaw = 0.0; 
 
-    move(7,26);
+    move(6,26);
     printStream(yaw,imu_aux);printw(",");
-    move(7,33);
+    move(6,33);
     printStream(p,imu_aux);printw(",");
-    move(7,40);
+    move(6,40);
     printStream(r,imu_aux);printw(" rad   ");
 
     //Speed IMU
-    move(8,26);
+    move(7,26);
     printStream(imu_.angular_velocity.z,imu_aux);printw(",");
-    move(8,33);
+    move(7,33);
     printStream(imu_.angular_velocity.y,imu_aux);printw(",");
-    move(8,40);
+    move(7,40);
     printStream(imu_.angular_velocity.x,imu_aux);printw(" rad/s  ");
 
     //Acceleration IMU
-    move(9,26);
+    move(8,26);
     printStream(imu_.linear_acceleration.x,imu_aux);printw(",");
-    move(9,33);
+    move(8,33);
     printStream(imu_.linear_acceleration.y,imu_aux);printw(",");
-    move(9,40);
+    move(8,40);
     printStream(imu_.linear_acceleration.z,imu_aux);printw(" m/s2   ");
 
     //Localization
